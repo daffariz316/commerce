@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Admin;
 use App\Models\biaya;
+use App\Models\Cart;
 use App\Models\category;
 use App\Models\dashboard;
 use App\Models\product;
@@ -35,5 +36,8 @@ public function loadAdmin(){
 }
 
    //add data to database
-
+public function loadCart(){
+    $carts = Cart::all();
+    return view('cart', ['carts' => $carts]);
+}
 }

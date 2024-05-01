@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\biaya;
 use App\Models\product;
+use LaravelDaily\LaravelCharts;
 use Illuminate\Http\Request;
+
 
 class ProductController extends Controller
 {
@@ -65,10 +68,11 @@ class ProductController extends Controller
 
     public function delete($id)
     {
-        $product = Product::findOrFail($id);
+        $product = product::findOrFail($id);
         $product->delete();
 
         // Redirect ke halaman index produk dengan pesan sukses
-        return redirect()->route('products.index')->with('success', 'Product deleted successfully.');
+        return redirect()->route('product.index')->with('success', 'Product deleted successfully.');
     }
+
 }

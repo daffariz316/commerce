@@ -16,7 +16,13 @@
                     <label for="name_product">Nama Produk:</label>
                     <input type="text" id="name_product" name="name_product" value="{{ $biaya->name_product }}">
                 </div>
-
+                <div class="form-group">
+                    <label for="type">type:</label>
+                    <select name="type" id="type">
+                        <option value="income" {{ $biaya->type == 'income' ? 'selected' : '' }}>Income</option>
+                        <option value="expense" {{ $biaya->type == 'expense' ? 'selected' : '' }}>Expense</option>
+                    </select>
+                </div>
                 <div class="form-group">
                     <label for="amount">Harga:</label>
                     <input type="text" id="amount" name="amount" value="{{ $biaya->amount }}">

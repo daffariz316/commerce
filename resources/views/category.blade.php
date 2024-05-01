@@ -67,6 +67,15 @@
                 </li>
 
                 <li>
+                    <a href="{{ url('/dashboard/cart') }}">
+                        <span class="icon">
+                            <ion-icon name="cart-outline"></ion-icon>
+                        </span>
+                        <span class="title">Cart</span>
+                    </a>
+                </li>
+
+                <li>
                     <a href="#">
                         <span class="icon">
                             <ion-icon name="log-out-outline"></ion-icon>
@@ -91,12 +100,15 @@
                     </label>
                 </div>
                 <div class="user">
-                    <img src="assets/imgs/customer01.jpg" alt="">
+                    <img src="{{ asset('asset/image/defaultProfile.png') }}" alt="Customer Image">
                 </div>
             </div>
             <div class="main-container">
                 <div class="row">
                     <div class="col-md-12">
+                        <button class="insert-button" onclick="window.location.href='{{ route('categories.create') }}'">
+                            <ion-icon name="add-circle-outline"></ion-icon> Insert
+                        </button>
                         <div class="table-wrap">
                             <table class="custom-table">
                                 <thead class="custom-thead">
@@ -117,9 +129,9 @@
                                         </td>
                                         <td>
                                             <div class="button-group">
-                                                <button><ion-icon name="create-outline"></ion-icon></button>
-                                                <button><ion-icon name="trash-outline"></ion-icon></button>
-                                                <button><ion-icon name="add-circle-outline"></ion-icon></button>
+                                                <button class="edit-button" onclick="window.location.href='{{ route('categories.edit', ['id' => $category->id]) }}'">
+                                                    <ion-icon name="create-outline"></ion-icon>
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>

@@ -67,6 +67,15 @@
                 </li>
 
                 <li>
+                    <a href="{{ url('/dashboard/cart') }}">
+                        <span class="icon">
+                            <ion-icon name="cart-outline"></ion-icon>
+                        </span>
+                        <span class="title">Cart</span>
+                    </a>
+                </li>
+
+                <li>
                     <a href="#">
                         <span class="icon">
                             <ion-icon name="log-out-outline"></ion-icon>
@@ -77,7 +86,6 @@
             </ul>
         </div>
     </div>
-
         <!-- ========================= Main ==================== -->
         <div class="main">
             <div class="topbar">
@@ -92,7 +100,7 @@
                     </label>
                 </div>
                 <div class="user">
-                    <img src="assets/imgs/customer01.jpg" alt="">
+                    <img src="{{ asset('asset/image/defaultProfile.png') }}" alt="Customer Image">
                 </div>
             </div>
             <div class="main-container">

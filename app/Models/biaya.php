@@ -11,6 +11,7 @@ class biaya extends Model
     protected $fillable = [
         'name_product',
         'amount',
+        'type',
         'description',
         'start_date',
         'end_date',

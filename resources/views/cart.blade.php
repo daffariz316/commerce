@@ -5,11 +5,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Bue</title>
+    <title>Responsive Admin Dashboard </title>
     <!-- ======= Styles ====== -->
     <link rel="stylesheet"href="{{ asset('asset/css/dashboard/style.css') }}">
-     <!-- ======= Charts Styles ====== -->
-     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -88,83 +86,74 @@
             </ul>
         </div>
     </div>
-        <!-- ========================= Main ==================== -->
-        <div class="main">
-            <div class="topbar">
-                <div class="toggle">
-                    <ion-icon name="menu-outline"></ion-icon>
-                </div>
+       <!-- ========================= Main ==================== -->
+<div class="main">
+    <div class="topbar">
+        <div class="toggle">
+            <ion-icon name="menu-outline"></ion-icon>
+        </div>
 
-                <div class="search">
-                    <label>
-                        <input type="text" placeholder="Search here">
-                        <ion-icon name="search-outline"></ion-icon>
-                    </label>
-                </div>
-                <div class="user">
-                    <img src="{{ asset('asset/image/defaultProfile.png') }}" alt="Customer Image">
+        <div class="search">
+            <label>
+                <input type="text" placeholder="Search here">
+                <ion-icon name="search-outline"></ion-icon>
+            </label>
+        </div>
+        <div class="user">
+            <img src="{{ asset('asset/image/defaultProfile.png') }}" alt="Customer Image">
+        </div>
+    </div>
+    <div class="main-container">
+        <div class="row">
+            <div class="col-md-12">
+                <button class="insert-button" onclick="window.location.href='{{ route('carts.create') }}'">
+                    <ion-icon name="add-circle-outline"></ion-icon> Insert
+                </button>
+                <div class="table-wrap">
+                    <table class="custom-table">
+                        <thead class="custom-thead">
+                            <tr>
+                                <th>no</th>
+                                <th>Nama Product</th>
+                                <th>Harga</th>
+                                <th>Jumlah</th>
+                                <th>Total</th>
+                                <th>Deskripsi</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($carts as $key => $cart)
+                            <tr class="custom-alert" role="alert">
+                                <td>{{ $key + 1 }}</td>
+                                <td>
+                                    <div class="email">
+                                        <span>{{ $cart->name_product }}</span>
+                                    </div>
+                                </td>
+                                <td>{{ $cart->price }}</td>
+                                <td>{{ $cart->quantity }}</td>
+                                <td>{{ $cart->total }}</td>
+                                <td>{{ $cart->description }}</td>
+                                <td>
+                                    <div class="button-group">
+                                        <button class="edit-button" onclick="window.location.href='{{ route('carts.edit', ['id' => $cart->id]) }}'">
+                                            <ion-icon name="create-outline"></ion-icon>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
-
-           <!-- ================ Order Details List ================= -->
-<div class="details">
-    <div class="recentOrders">
-        <div class="cardHeader">
-            <h2>Hallo Selamat Datang Para Admin Sekalian, hari ini</h2>
         </div>
-        <!-- Tambahkan div untuk menampilkan grafik di sini -->
-        <canvas id="myChart"></canvas>
-        <canvas id="myChart1" width="400" height="400"></canvas>
     </div>
 </div>
 
-<!-- =========== Scripts =========  -->
-<script>
-    // Mengambil data dari controller
-    var income = @json($income);
-    var expense = @json($expense);
-    var labels = @json($labels);
-
-    // Mengatur data untuk grafik
-    var data = {
-        labels: labels,
-        datasets: [{
-            label: 'Income',
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderColor: 'rgba(75, 192, 192, 1)',
-            borderWidth: 1,
-            data: Object.values(income)
-        }, {
-            label: 'Expense',
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-            borderColor: 'rgba(255, 99, 132, 1)',
-            borderWidth: 1,
-            data: Object.values(expense)
-        }]
-    };
-
-    // Konfigurasi opsi grafik
-    var options = {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
-        }
-    };
-
-    // Membuat grafik dengan Chart.js
-    var ctx = document.getElementById('myChart').getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: data,
-        options: options
-    });
-</script>
     <!-- =========== Scripts =========  -->
     <script src="{{ asset('asset/js/main.js') }}"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- ====== ionicons ======= -->
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>

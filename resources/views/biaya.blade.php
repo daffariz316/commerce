@@ -67,6 +67,15 @@
                 </li>
 
                 <li>
+                    <a href="{{ url('/dashboard/cart') }}">
+                        <span class="icon">
+                            <ion-icon name="cart-outline"></ion-icon>
+                        </span>
+                        <span class="title">Cart</span>
+                    </a>
+                </li>
+
+                <li>
                     <a href="#">
                         <span class="icon">
                             <ion-icon name="log-out-outline"></ion-icon>
@@ -92,7 +101,7 @@
                     </label>
                 </div>
                 <div class="user">
-                    <img src="assets/imgs/customer01.jpg" alt="">
+                    <img src="{{ asset('asset/image/defaultProfile.png') }}" alt="Customer Image">
                 </div>
             </div>
             {{--main containner --}}
@@ -112,6 +121,7 @@
                             <input type="date" id="startDate" class="filter">
                             <input type="date" id="endDate" class="filter">
                             <button class="filter-button" onclick="filterByDate()">Filter</button>
+                            <button class="download-button" onclick="downloadFiltered()">Download Filtered</button>
                         </div>
                     </div>
                 </div>
@@ -122,12 +132,12 @@
                                 <thead class="custom-thead">
                                     <tr>
                                         <th>no</th>
+                                        <th>Tanggal Produksi</th>
+                                        <th>Tanggal Transaksi</th>
                                         <th>Nama Product</th>
                                         <th>Pemasukan</th>
                                         <th>Pengeluaran</th>
-                                        <th>description</th>
-                                        <th>tanggal mulai</th>
-                                        <th>tanggal selesai</th>
+                                        <th>Description</th>
                                         <th>action</th>
                                     </tr>
                                 </thead>
@@ -140,12 +150,12 @@
                                     @foreach($biaya as $key => $item)
                                     <tr class="custom-alert" role="alert">
                                         <td>{{ $key + 1 }}</td>
+                                        <td>{{ $item->start_date }}</td>
+                                        <td>{{ $item->end_date }}</td>
                                         <td>{{ $item->name_product }}</td>
                                         <td>{{ $item->type == 'income' ? 'Rp'.number_format($item->amount, 0, ',', '.') : '0' }}</td>
                                         <td>{{ $item->type == 'expense' ? 'Rp'.number_format($item->amount, 0, ',', '.') : '0' }}</td>
                                         <td>{{ $item->description }}</td>
-                                        <td>{{ $item->start_date }}</td>
-                                        <td>{{ $item->end_date }}</td>
                                         <td>
                                             @php
                                                 if ($item->type == 'income') {
@@ -193,6 +203,12 @@
                     // Redirect to the route with query parameters
                     window.location.href = "{{ route('index') }}?startDate=" + startDate + "&endDate=" + endDate;
                 }
+                function downloadFiltered() {
+        var startDate = document.getElementById('startDate').value;
+        var endDate = document.getElementById('endDate').value;
+        // Redirect to the route for downloading filtered data
+        window.location.href = "{{ route('download.filtered.pdf') }}?startDate=" + startDate + "&endDate=" + endDate;
+    }
             </script>
 
 

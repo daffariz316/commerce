@@ -86,52 +86,52 @@ class BiayaController extends Controller
         $pdf->Output('biaya.pdf', 'D');
     }
     public function downloadAllPDF()
-    {
-        // Ambil semua data biaya dari database
-        $biayas = Biaya::all();
+{
+    // Ambil semua data biaya dari database
+    $biayas = Biaya::all();
 
-        // Inisialisasi total pendapatan dan pengeluaran
-        $totalPemasukan = 0;
-        $totalPengeluaran = 0;
+    // Buat instance TCPDF
+    $pdf = new TCPDF();
 
-        // Buat instance TCPDF
-        $pdf = new TCPDF();
+    // Set judul dan margin
+    $pdf->SetTitle('Semua Detail Biaya');
+    $pdf->SetMargins(10, 10, 10);
 
-        // Set judul dan margin
-        $pdf->SetTitle('Semua Detail Biaya');
-        $pdf->SetMargins(10, 10, 10);
+    // Tambahkan halaman baru ke PDF
+    $pdf->AddPage();
 
-        // Tambahkan halaman baru ke PDF
-        $pdf->AddPage();
+    // Set font untuk konten
+    $pdf->SetFont('dejavusans', '', 12); // Gunakan font DejaVu Sans
 
-        // Set font untuk konten
-        $pdf->SetFont('dejavusans', '', 12); // Gunakan font DejaVu Sans
+    // Tambahkan judul
+    $pdf->Cell(0, 10, 'Semua Detail Biaya', 0, 1, 'C');
+    $pdf->Ln(10);
 
-        // Tambahkan judul
-        $pdf->Cell(0, 10, 'Semua Detail Biaya', 0, 1, 'C');
-        $pdf->Ln(10);
+    // Inisialisasi total pendapatan dan pengeluaran
+    $totalPemasukan = 0;
+    $totalPengeluaran = 0;
 
-        // Iterasi melalui setiap data biaya
-        foreach ($biayas as $biaya) {
-            // Tambahkan tabel untuk setiap data biaya
-            $html = '<table border="1" cellpadding="5">
-                        <tr>
-                            <th>Nama Produk</th>
-                            <td>' . $biaya->name_product . '</td>
-                        </tr>
-                        <tr>
-                            <th>Jumlah</th>
-                            <td>' . $biaya->amount . '</td>
-                        </tr>
-                        <tr>
-                            <th>Tipe</th>
-                            <td>' . $biaya->type . '</td>
-                        </tr>
-                        <tr>
-                            <th>Deskripsi</th>
-                            <td>' . $biaya->description . '</td>
-                        </tr>
-                        <tr>
+    // Iterasi melalui setiap data biaya
+    foreach ($biayas as $biaya) {
+        // Tambahkan tabel untuk setiap data biaya
+        $html = '<table border="1" cellpadding="5">
+                    <tr>
+                        <th>Nama Produk</th>
+                        <td>' . $biaya->name_product . '</td>
+                    </tr>
+                    <tr>
+                        <th>Jumlah</th>
+                        <td>' . $biaya->amount . '</td>
+                    </tr>
+                    <tr>
+                        <th>Tipe</th>
+                        <td>' . $biaya->type . '</td>
+                    </tr>
+                    <tr>
+                        <th>Deskripsi</th>
+                        <td>' . $biaya->description . '</td>
+                    </tr>
+                    <tr>
                         <th>Tanggal</th>
                         <td>' . $biaya->start_date . '</td>
                     </tr>
@@ -139,32 +139,33 @@ class BiayaController extends Controller
                         <th>Tanggal</th>
                         <td>' . $biaya->end_date . '</td>
                     </tr>
-                    </table>';
+                </table>';
 
-            // Tambahkan konten ke PDF
-            $pdf->writeHTML($html, true, false, true, false, '');
+        // Tambahkan konten ke PDF
+        $pdf->writeHTML($html, true, false, true, false, '');
 
-            // Tambahkan jumlah pendapatan atau pengeluaran ke total sesuai tipe biaya
-            if ($biaya->type == 'income') {
-                $totalPemasukan += $biaya->amount;
-            } else if ($biaya->type == 'expense') {
-                $totalPengeluaran += $biaya->amount;
-            }
-
-            // Tambahkan halaman baru jika masih ada data biaya yang tersisa
-            if ($biaya !== $biayas->last()) {
-                $pdf->AddPage();
-            }
+        // Tambahkan jumlah pendapatan atau pengeluaran ke total sesuai tipe biaya
+        if ($biaya->type == 'income') {
+            $totalPemasukan += $biaya->amount;
+        } else if ($biaya->type == 'expense') {
+            $totalPengeluaran += $biaya->amount;
         }
 
-        // Tambahkan total pendapatan dan pengeluaran ke PDF
-        $totalHtml = '<strong>Total Pendapatan:</strong> Rp' . number_format($totalPemasukan, 0, ',', '.') . '<br>';
-        $totalHtml .= '<strong>Total Pengeluaran:</strong> Rp' . number_format($totalPengeluaran, 0, ',', '.') . '<br>';
-        $pdf->writeHTML($totalHtml, true, false, true, false, '');
-
-        // Keluarkan PDF ke browser dan download dengan nama file 'semua_detail_biaya.pdf'
-        $pdf->Output('semua_laporan.pdf', 'D');
+        // Tambahkan halaman baru jika masih ada data biaya yang tersisa
+        if ($biaya !== $biayas->last()) {
+            $pdf->AddPage();
+        }
     }
+
+    // Tambahkan total pendapatan dan pengeluaran ke PDF
+    $totalHtml = '<strong>Total Pendapatan:</strong> Rp' . number_format($totalPemasukan, 0, ',', '.') . '<br>';
+    $totalHtml .= '<strong>Total Pengeluaran:</strong> Rp' . number_format($totalPengeluaran, 0, ',', '.') . '<br>';
+    $pdf->writeHTML($totalHtml, true, false, true, false, '');
+
+    // Keluarkan PDF ke browser dan download dengan nama file 'semua_detail_biaya.pdf'
+    $pdf->Output('semua_laporan.pdf', 'D');
+}
+
 
 // public function edit($id)
 // {
@@ -201,22 +202,6 @@ class BiayaController extends Controller
 //     // Redirect ke halaman biaya dengan pesan sukses
 //     return redirect()->route('biaya')->with('success', 'Data biaya berhasil diperbarui.');
 // }
-// public function delete($id)
-// {
-//     // Temukan biaya berdasarkan ID
-//     $biaya = Biaya::find($id);
-
-//     // Periksa apakah biaya ditemukan
-//     if (!$biaya) {
-//         return redirect()->back()->with('error', 'Data biaya tidak ditemukan.');
-//     }
-
-//     // Hapus biaya
-//     $biaya->delete();
-
-//     // Redirect kembali dengan pesan sukses
-//     return redirect()->back()->with('success', 'Biaya berhasil dihapus.');
-// }
 public function edit($id)
     {
         $biaya = Biaya::findOrFail($id);
@@ -225,16 +210,16 @@ public function edit($id)
 
     public function update(Request $request, $id)
     {
-        $biaya = Biaya::findOrFail($id);
+        $biaya = biaya::findOrFail($id);
         // Lakukan validasi data jika diperlukan
         $biaya->update($request->all());
         return redirect()->route('index')->with('success', 'Data berhasil diperbarui.');   }
 
     public function delete($id)
     {
-        $biaya = Biaya::findOrFail($id);
+        $biaya = biaya::findOrFail($id);
         $biaya->delete();
-        return redirect()->back()->with('success', 'Data berhasil dihapus.');
+        return redirect()->route('index')->with('success', 'Data berhasil dihapus.');
     }
 
 
@@ -258,11 +243,89 @@ public function edit($id)
         ]);
 
         // Simpan data ke database
-        Biaya::create($request->all());
+        biaya::create($request->all());
 
         // Redirect ke halaman yang sesuai atau tampilkan pesan berhasil
         return redirect()->route('index')->with('success', 'Data berhasil ditambahkan.');
     }
+    public function loadDashboard()
+    {
+        // Ambil data biaya dari database
+        // Ambil data untuk grafik
+        $income = biaya::where('type', 'income')->pluck('amount')->toArray();
+        $expense = biaya::where('type', 'expense')->pluck('amount')->toArray();
+        $labels = biaya::pluck('name_product')->toArray(); // Misalnya, gunakan 'name_product' sebagai label
+
+    // Kirim data ke tampilan
+    return view('dashboard', compact('income', 'expense', 'labels'));
+    }
+    public function downloadFilteredPDF(Request $request)
+{
+    // Ambil tanggal mulai dan tanggal selesai dari permintaan
+    $startDate = $request->input('startDate');
+    $endDate = $request->input('endDate');
+
+    // Query data dari database berdasarkan rentang tanggal
+    $filteredData = Biaya::whereBetween('start_date', [$startDate, $endDate])->get();
+
+    // Hitung jumlah pemasukan dan pengeluaran
+    $totalPemasukan = $filteredData->where('type', 'income')->sum('amount');
+    $totalPengeluaran = $filteredData->where('type', 'expense')->sum('amount');
+
+    // Buat instance TCPDF
+    $pdf = new TCPDF();
+
+    // Set judul dan margin
+    $pdf->SetTitle('Filtered Data PDF');
+    $pdf->SetMargins(10, 10, 10);
+
+    // Tambahkan halaman baru ke PDF
+    $pdf->AddPage();
+
+    // Tambahkan judul
+    $pdf->Cell(0, 10, 'Filtered Data', 0, 1, 'C');
+    $pdf->Ln(10);
+
+    // Tambahkan tabel
+    $html = '<table border="1" cellpadding="5">
+                <tr>
+                    <th>Nama Product</th>
+                    <th>Jumlah</th>
+                    <th>Tipe</th>
+                    <th>Deskripsi</th>
+                    <th>Tanggal Mulai</th>
+                    <th>Tanggal Selesai</th>
+                </tr>';
+    foreach ($filteredData as $data) {
+        $html .= '<tr>
+                    <td>' . $data->name_product . '</td>
+                    <td>' . $data->amount . '</td>
+                    <td>' . $data->type . '</td>
+                    <td>' . $data->description . '</td>
+                    <td>' . $data->start_date . '</td>
+                    <td>' . $data->end_date . '</td>
+                  </tr>';
+    }
+    $html .= '<tr>
+                <td colspan="6"></td>
+             </tr>
+             <tr>
+                <td colspan="2">Total Pemasukan</td>
+                <td colspan="4">' . $totalPemasukan . '</td>
+             </tr>
+             <tr>
+                <td colspan="2">Total Pengeluaran</td>
+                <td colspan="4">' . $totalPengeluaran . '</td>
+             </tr>';
+    $html .= '</table>';
+
+    // Tambahkan konten ke PDF
+    $pdf->writeHTML($html, true, false, true, false, '');
+
+    // Keluarkan PDF ke browser dan download dengan nama file 'filtered_data.pdf'
+    $pdf->Output('data terfilter.pdf', 'D');
+    }
+
 }
 
 
