@@ -31,7 +31,7 @@
                 </li>
 
                 <li>
-                    <a href="{{ url('/dashboard/biaya') }}">
+                    <a href="{{ url('/biaya') }}">
                         <span class="icon">
                             <ion-icon name="swap-horizontal-outline"></ion-icon>
                         </span>
@@ -40,7 +40,7 @@
                 </li>
 
                 <li>
-                    <a href="{{ url('/dashboard/product') }}">
+                    <a href="{{ url('/product') }}">
                         <span class="icon">
                             <ion-icon name="pricetags-outline"></ion-icon>
                         </span>
@@ -49,7 +49,7 @@
                 </li>
 
                 <li>
-                    <a href="{{ url('/dashboard/category') }}">
+                    <a href="{{ url('/category') }}">
                         <span class="icon">
                             <ion-icon name="copy-outline"></ion-icon>
                         </span>
@@ -58,7 +58,7 @@
                 </li>
 
                 <li>
-                    <a href="{{ url('/dashboard/admin') }}">
+                    <a href="{{ url('/admin') }}">
                         <span class="icon">
                             <ion-icon name="people-outline"></ion-icon>
                         </span>
@@ -67,7 +67,7 @@
                 </li>
 
                 <li>
-                    <a href="{{ url('/dashboard/cart') }}">
+                    <a href="{{ url('/cart') }}">
                         <span class="icon">
                             <ion-icon name="cart-outline"></ion-icon>
                         </span>

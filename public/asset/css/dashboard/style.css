@@ -254,7 +254,7 @@
 }
 
 .cardBox .card:hover {
-  background: var(--blue);
+  background: var(--gold);
 }
 .cardBox .card:hover .numbers,
 .cardBox .card:hover .cardName,

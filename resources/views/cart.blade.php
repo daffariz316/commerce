@@ -31,7 +31,7 @@
                 </li>
 
                 <li>
-                    <a href="{{ url('/dashboard/biaya') }}">
+                    <a href="{{ url('/biaya') }}">
                         <span class="icon">
                             <ion-icon name="swap-horizontal-outline"></ion-icon>
                         </span>
@@ -40,7 +40,7 @@
                 </li>
 
                 <li>
-                    <a href="{{ url('/dashboard/product') }}">
+                    <a href="{{ url('/product') }}">
                         <span class="icon">
                             <ion-icon name="pricetags-outline"></ion-icon>
                         </span>
@@ -49,7 +49,7 @@
                 </li>
 
                 <li>
-                    <a href="{{ url('/dashboard/category') }}">
+                    <a href="{{ url('/category') }}">
                         <span class="icon">
                             <ion-icon name="copy-outline"></ion-icon>
                         </span>
@@ -58,7 +58,7 @@
                 </li>
 
                 <li>
-                    <a href="{{ url('/dashboard/admin') }}">
+                    <a href="{{ url('/admin') }}">
                         <span class="icon">
                             <ion-icon name="people-outline"></ion-icon>
                         </span>
@@ -67,7 +67,7 @@
                 </li>
 
                 <li>
-                    <a href="{{ url('/dashboard/cart') }}">
+                    <a href="{{ url('/cart') }}">
                         <span class="icon">
                             <ion-icon name="cart-outline"></ion-icon>
                         </span>
@@ -76,13 +76,17 @@
                 </li>
 
                 <li>
-                    <a href="#">
+                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         <span class="icon">
                             <ion-icon name="log-out-outline"></ion-icon>
                         </span>
                         <span class="title">Sign Out</span>
                     </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
                 </li>
+                
             </ul>
         </div>
     </div>
@@ -106,15 +110,13 @@
     <div class="main-container">
         <div class="row">
             <div class="col-md-12">
-                <button class="insert-button" onclick="window.location.href='{{ route('carts.create') }}'">
-                    <ion-icon name="add-circle-outline"></ion-icon> Insert
-                </button>
                 <div class="table-wrap">
                     <table class="custom-table">
                         <thead class="custom-thead">
                             <tr>
                                 <th>no</th>
                                 <th>Nama Product</th>
+                                <th>Gambar</th>
                                 <th>Harga</th>
                                 <th>Jumlah</th>
                                 <th>Total</th>
@@ -131,15 +133,20 @@
                                         <span>{{ $cart->name_product }}</span>
                                     </div>
                                 </td>
+                                <td>
+                                    <div class="email">
+                                        <img src="{{ asset('images/' . $cart->image) }}" alt="Product Image">
+                                    </div>
                                 <td>{{ $cart->price }}</td>
                                 <td>{{ $cart->quantity }}</td>
                                 <td>{{ $cart->total }}</td>
                                 <td>{{ $cart->description }}</td>
                                 <td>
                                     <div class="button-group">
-                                        <button class="edit-button" onclick="window.location.href='{{ route('carts.edit', ['id' => $cart->id]) }}'">
-                                            <ion-icon name="create-outline"></ion-icon>
+                                        <button class="edit-button" onclick="window.location.href='{{ route('carts.printReceipt', ['id' => $cart->id]) }}'">
+                                            Cetak Struk
                                         </button>
+
                                     </div>
                                 </td>
                             </tr>

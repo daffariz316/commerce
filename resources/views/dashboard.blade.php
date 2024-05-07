@@ -33,7 +33,7 @@
                 </li>
 
                 <li>
-                    <a href="{{ url('/dashboard/biaya') }}">
+                    <a href="{{ url('/biaya') }}">
                         <span class="icon">
                             <ion-icon name="swap-horizontal-outline"></ion-icon>
                         </span>
@@ -42,7 +42,7 @@
                 </li>
 
                 <li>
-                    <a href="{{ url('/dashboard/product') }}">
+                    <a href="{{ url('/product') }}">
                         <span class="icon">
                             <ion-icon name="pricetags-outline"></ion-icon>
                         </span>
@@ -51,7 +51,7 @@
                 </li>
 
                 <li>
-                    <a href="{{ url('/dashboard/category') }}">
+                    <a href="{{ url('/category') }}">
                         <span class="icon">
                             <ion-icon name="copy-outline"></ion-icon>
                         </span>
@@ -60,16 +60,15 @@
                 </li>
 
                 <li>
-                    <a href="{{ url('/dashboard/admin') }}">
+                    <a href="{{ url('/admin') }}">
                         <span class="icon">
                             <ion-icon name="people-outline"></ion-icon>
                         </span>
                         <span class="title">Admin Account</span>
                     </a>
                 </li>
-
                 <li>
-                    <a href="{{ url('/dashboard/cart') }}">
+                    <a href="{{ url('/cart') }}">
                         <span class="icon">
                             <ion-icon name="cart-outline"></ion-icon>
                         </span>
@@ -78,13 +77,17 @@
                 </li>
 
                 <li>
-                    <a href="#">
+                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         <span class="icon">
                             <ion-icon name="log-out-outline"></ion-icon>
                         </span>
                         <span class="title">Sign Out</span>
                     </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
                 </li>
+
             </ul>
         </div>
     </div>
@@ -105,6 +108,39 @@
                     <img src="{{ asset('asset/image/defaultProfile.png') }}" alt="Customer Image">
                 </div>
             </div>
+            <!-- ======================= Cards ================== -->
+            <div class="cardBox">
+                <div class="card">
+                    <div>
+                        <div class="numbers">80</div>
+                        <div class="cardName">Sales</div>
+                    </div>
+
+                    <div class="iconBx">
+                        <ion-icon name="cart-outline"></ion-icon>
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <div class="numbers">${{ $totalIncome ?? '0.00' }}</div>
+                        <div class="cardName">Total Pemasukan</div>
+                    </div>
+                    <div class="iconBx">
+                        <ion-icon name="cash-outline"></ion-icon>
+                    </div>
+                </div>
+
+                <!-- Total Expense Card -->
+                <div class="card">
+                    <div>
+                        <div class="numbers">${{ $totalExpense ?? '0.00' }}</div>
+                        <div class="cardName">Total Pengeluaran</div>
+                    </div>
+                    <div class="iconBx">
+                        <ion-icon name="cash-outline"></ion-icon>
+                    </div>
+                </div>
+            </div>
 
            <!-- ================ Order Details List ================= -->
 <div class="details">
@@ -114,7 +150,6 @@
         </div>
         <!-- Tambahkan div untuk menampilkan grafik di sini -->
         <canvas id="myChart"></canvas>
-        <canvas id="myChart1" width="400" height="400"></canvas>
     </div>
 </div>
 

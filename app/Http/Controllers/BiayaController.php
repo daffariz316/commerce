@@ -54,6 +54,14 @@ class BiayaController extends Controller
         // Tambahkan tabel
         $html = '<table border="1" cellpadding="5">
                     <tr>
+                        <th>Tanggal</th>
+                        <td>' . $biaya->start_date . '</td>
+                    </tr>
+                    <tr>
+                        <th>Tanggal</th>
+                        <td>' . $biaya->end_date . '</td>
+                    </tr>
+                    <tr>
                         <th>Nama Produk</th>
                         <td>' . $biaya->name_product . '</td>
                     </tr>
@@ -69,14 +77,6 @@ class BiayaController extends Controller
                         <th>Deskripsi</th>
                         <td>' . $biaya->description . '</td>
                     </tr>
-                    <tr>
-                    <th>Tanggal</th>
-                    <td>' . $biaya->start_date . '</td>
-                </tr>
-                <tr>
-                    <th>Tanggal</th>
-                    <td>' . $biaya->end_date . '</td>
-                </tr>
                 </table>';
 
         // Tambahkan konten ke PDF
@@ -115,6 +115,14 @@ class BiayaController extends Controller
     foreach ($biayas as $biaya) {
         // Tambahkan tabel untuk setiap data biaya
         $html = '<table border="1" cellpadding="5">
+                        <tr>
+                        <th>Tanggal Produksi</th>
+                        <td>' . $biaya->start_date . '</td>
+                    </tr>
+                    <tr>
+                        <th>Tanggal Transaksi</th>
+                        <td>' . $biaya->end_date . '</td>
+                    </tr>
                     <tr>
                         <th>Nama Produk</th>
                         <td>' . $biaya->name_product . '</td>
@@ -130,14 +138,6 @@ class BiayaController extends Controller
                     <tr>
                         <th>Deskripsi</th>
                         <td>' . $biaya->description . '</td>
-                    </tr>
-                    <tr>
-                        <th>Tanggal</th>
-                        <td>' . $biaya->start_date . '</td>
-                    </tr>
-                    <tr>
-                        <th>Tanggal</th>
-                        <td>' . $biaya->end_date . '</td>
                     </tr>
                 </table>';
 
@@ -248,7 +248,7 @@ public function edit($id)
         // Redirect ke halaman yang sesuai atau tampilkan pesan berhasil
         return redirect()->route('index')->with('success', 'Data berhasil ditambahkan.');
     }
-    public function loadDashboard()
+    public function ChartDashboard()
     {
         // Ambil data biaya dari database
         // Ambil data untuk grafik
@@ -272,6 +272,10 @@ public function edit($id)
     $totalPemasukan = $filteredData->where('type', 'income')->sum('amount');
     $totalPengeluaran = $filteredData->where('type', 'expense')->sum('amount');
 
+    // Format jumlah pemasukan dan pengeluaran ke mata uang Rupiah (IDR)
+    $totalPemasukanFormatted = 'Rp ' . number_format($totalPemasukan, 0, ',', '.');
+    $totalPengeluaranFormatted = 'Rp ' . number_format($totalPengeluaran, 0, ',', '.');
+
     // Buat instance TCPDF
     $pdf = new TCPDF();
 
@@ -289,21 +293,21 @@ public function edit($id)
     // Tambahkan tabel
     $html = '<table border="1" cellpadding="5">
                 <tr>
+                    <th>Tanggal Produksi</th>
+                    <th>Tanggal Transaksi</th>
                     <th>Nama Product</th>
                     <th>Jumlah</th>
                     <th>Tipe</th>
                     <th>Deskripsi</th>
-                    <th>Tanggal Mulai</th>
-                    <th>Tanggal Selesai</th>
                 </tr>';
     foreach ($filteredData as $data) {
         $html .= '<tr>
+                    <td>' . $data->start_date . '</td>
+                    <td>' . $data->end_date . '</td>
                     <td>' . $data->name_product . '</td>
                     <td>' . $data->amount . '</td>
                     <td>' . $data->type . '</td>
                     <td>' . $data->description . '</td>
-                    <td>' . $data->start_date . '</td>
-                    <td>' . $data->end_date . '</td>
                   </tr>';
     }
     $html .= '<tr>
@@ -311,11 +315,11 @@ public function edit($id)
              </tr>
              <tr>
                 <td colspan="2">Total Pemasukan</td>
-                <td colspan="4">' . $totalPemasukan . '</td>
+                <td colspan="4">' . $totalPemasukanFormatted . '</td>
              </tr>
              <tr>
                 <td colspan="2">Total Pengeluaran</td>
-                <td colspan="4">' . $totalPengeluaran . '</td>
+                <td colspan="4">' . $totalPengeluaranFormatted . '</td>
              </tr>';
     $html .= '</table>';
 
@@ -324,8 +328,20 @@ public function edit($id)
 
     // Keluarkan PDF ke browser dan download dengan nama file 'filtered_data.pdf'
     $pdf->Output('data terfilter.pdf', 'D');
-    }
+}
+public function showIncomeAndExpense()
+{
+    // Menghitung total pemasukan
+    $totalincome = Biaya::where('type', 'income')->sum('amount');
 
+    // Menghitung total pengeluaran
+    $totalexpense = Biaya::where('type', 'expense')->sum('amount');
+
+    return view('dashboard', [
+        'totalIncome' => $totalincome,
+        'totalExpense' => $totalexpense,
+    ]);
+}
 }
 
 

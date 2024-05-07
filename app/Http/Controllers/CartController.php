@@ -3,76 +3,34 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\product;
+use TCPDF;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 class CartController extends Controller
 {
-    public function index()
-    {
-        // Ambil semua data dari tabel carts
-        $carts = Cart::all();
 
-        // Kirim data ke tampilan cart
-        return view('cart', compact('carts'));
-    }
-
-    public function create()
+    public function addToCart(Request $request)
     {
-        // Tampilkan form untuk membuat data baru
-        return view('create-cart');
-    }
-
-    public function store(Request $request)
-    {
-        // Validasi data yang diterima dari form
-        $validatedData = $request->validate([
-            'name_product' => 'required|string|max:255',
-            'price' => 'required|string|max:255',
-            'quantity' => 'required|string|max:255',
-            'total' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
+        // Validasi permintaan
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'quantity' => 'required|integer|min:1',
         ]);
 
-        // Buat data baru berdasarkan data yang divalidasi
-        Cart::create($validatedData);
+        // Ambil pengguna yang terautentikasi
+        $user = Auth::user();
 
-        // Redirect ke halaman index cart dengan pesan sukses
-        return redirect()->route('carts.index')->with('success', 'Cart created successfully.');
-    }
-
-    public function edit($id)
-    {
-        // Temukan data berdasarkan ID yang diberikan
-        $cart = Cart::findOrFail($id);
-
-        // Tampilkan form untuk mengedit data
-        return view('edit-cart', compact('cart'));
-    }
-
-    public function update(Request $request, $id)
-    {
-        // Validasi data yang diterima dari form
-        $validatedData = $request->validate([
-            'name_product' => 'required|string|max:255',
-            'price' => 'required|string|max:255',
-            'quantity' => 'required|string|max:255',
-            'total' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
+        // Tambahkan item ke keranjang belanja
+        Cart::create([
+            'user_id' => $user->id,
+            'product_id' => $request->product_id,
+            'quantity' => $request->quantity,
         ]);
 
-        // Temukan data berdasarkan ID yang diberikan
-        $cart = Cart::findOrFail($id);
-
-        // Update data berdasarkan data yang divalidasi
-        $cart->update($validatedData);
-
-        // Redirect ke halaman index cart dengan pesan sukses
-        return redirect()->route('carts.index')->with('success', 'Cart updated successfully.');
+        return redirect()->back()->with('success', 'Product added to cart successfully.');
     }
+    
 
-    public function destroy($id)
-    {
-        // Temukan data berdasarkan ID yang diberikan
-        $cart = Cart::findOrFail($id);
-    }
 }

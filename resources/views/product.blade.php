@@ -31,7 +31,7 @@
                 </li>
 
                 <li>
-                    <a href="{{ url('/dashboard/biaya') }}">
+                    <a href="{{ url('/biaya') }}">
                         <span class="icon">
                             <ion-icon name="swap-horizontal-outline"></ion-icon>
                         </span>
@@ -40,7 +40,7 @@
                 </li>
 
                 <li>
-                    <a href="{{ url('/dashboard/product') }}">
+                    <a href="{{ url('/product') }}">
                         <span class="icon">
                             <ion-icon name="pricetags-outline"></ion-icon>
                         </span>
@@ -49,7 +49,7 @@
                 </li>
 
                 <li>
-                    <a href="{{ url('/dashboard/category') }}">
+                    <a href="{{ url('/category') }}">
                         <span class="icon">
                             <ion-icon name="copy-outline"></ion-icon>
                         </span>
@@ -58,7 +58,7 @@
                 </li>
 
                 <li>
-                    <a href="{{ url('/dashboard/admin') }}">
+                    <a href="{{ url('/admin') }}">
                         <span class="icon">
                             <ion-icon name="people-outline"></ion-icon>
                         </span>
@@ -67,7 +67,7 @@
                 </li>
 
                 <li>
-                    <a href="{{ url('/dashboard/cart') }}">
+                    <a href="{{ url('/cart') }}">
                         <span class="icon">
                             <ion-icon name="cart-outline"></ion-icon>
                         </span>
@@ -76,78 +76,93 @@
                 </li>
 
                 <li>
-                    <a href="#">
+                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         <span class="icon">
                             <ion-icon name="log-out-outline"></ion-icon>
                         </span>
                         <span class="title">Sign Out</span>
                     </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
                 </li>
+
             </ul>
         </div>
     </div>
-        <!-- ========================= Main ==================== -->
-        <div class="main">
-            <div class="topbar">
-                <div class="toggle">
-                    <ion-icon name="menu-outline"></ion-icon>
-                </div>
 
-                <div class="search">
-                    <label>
-                        <input type="text" placeholder="Search here">
-                        <ion-icon name="search-outline"></ion-icon>
-                    </label>
-                </div>
-                <div class="user">
-                    <img src="{{ asset('asset/image/defaultProfile.png') }}" alt="Customer Image">
-                </div>
+         <!-- ========================= Main ==================== -->
+    <div class="main">
+        <div class="topbar">
+            <div class="toggle">
+                <ion-icon name="menu-outline"></ion-icon>
             </div>
-            <div class="main-container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <!-- Tombol Insert -->
-                        <button class="insert-button" onclick="window.location.href='{{ route('products.create') }}'">
-                            <ion-icon name="add-circle-outline"></ion-icon> Insert
-                        </button>
 
-                        <div class="table-wrap">
-                            <table class="custom-table">
-                                <thead class="custom-thead">
-                                    <tr>
-                                        <th>no</th>
-                                        <th>Nama Product</th>
-                                        <th>Harga</th>
-                                        <th>Deskripsi</th>
-                                        <th>Tanggal</th>
-                                        <th>action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($products as $key => $product)
-                                    <tr class="custom-alert" role="alert">
-                                        <td>{{ $key + 1 }}</td>
-                                        <td>{{ $product->name_product }}</td>
-                                        <td>Rp {{ number_format($product->price, 0, ',', '.') }}</td>
-                                        <td>{{ $product->description }}</td>
-                                        <td>{{ $product->date }}</td>
-                                        <td>
-                                            {{-- tombol untuk edit datanya --}}
-                                            <div class="button-group">
-                                                <button class="edit-button" onclick="window.location.href='{{ route('product.edit', ['id' => $product->id]) }}'">
-                                                    <ion-icon name="create-outline"></ion-icon>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+            <div class="search">
+                <label>
+                    <input type="text" placeholder="Search here">
+                    <ion-icon name="search-outline"></ion-icon>
+                </label>
+            </div>
+            <!-- Jika gambar placeholder berada di dalam direktori public/assets/imgs/customer01.jpg -->
+<div class="user">
+    <img src="{{ asset('asset/image/defaultProfile.png') }}" alt="Customer Image">
+</div>
+
+        </div>
+        <div class="main-container">
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- Tombol Insert -->
+                    <button class="insert-button" onclick="window.location.href='{{ route('products.create') }}'">
+                        <ion-icon name="add-circle-outline"></ion-icon> Insert
+                    </button>
+
+                    <div class="table-wrap">
+                        <table class="custom-table">
+                            <thead class="custom-thead">
+                                <tr>
+                                    <th>no</th>
+                                    <th>Nama Product</th>
+                                    <th>Image</th>
+                                    <th>Harga</th>
+                                    <th>Deskripsi</th>
+                                    <th>Tanggal</th>
+                                    <th>action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($products as $key => $product)
+                                <tr class="custom-alert" role="alert">
+                                    <td>{{ $key + 1 }}</td>
+                                    <td>{{ $product->name_product }}</td>
+                                    <td>
+                                        @if($product->image)
+                                        <img src="{{ '/images' . asset( $product->image) }}" alt="Product Image" width="100">
+                                        @else
+                                        No Image Available
+                                        @endif
+                                    </td>
+                                    <td>Rp {{ number_format($product->price, 0, ',', '.') }}</td>
+                                    <td>{{ $product->description }}</td>
+                                    <td>{{ $product->date }}</td>
+                                    <td>
+                                        {{-- tombol untuk edit datanya --}}
+                                        <div class="button-group">
+                                            <button class="edit-button" onclick="window.location.href='{{ route('product.edit', ['id' => $product->id]) }}'">
+                                                <ion-icon name="create-outline"></ion-icon>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     <!-- =========== Scripts =========  -->
     <script src="{{ asset('asset/js/main.js') }}"></script>
     <!-- ====== ionicons ======= -->
