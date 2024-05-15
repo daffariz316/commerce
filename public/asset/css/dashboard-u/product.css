@@ -117,7 +117,7 @@ h2 {
     flex-direction: column;
 }
 
-.add-to-cart-form .quantity {
+/* .add-to-cart-form .quantity {
     margin-bottom: 10px;
 }
 
@@ -131,7 +131,7 @@ h2 {
     border: 1px solid #ccc;
     border-radius: 3px;
     font-size: 14px;
-}
+} */
 
 /* .add-to-cart-form .btn {
     background-color: #007bff;

@@ -249,16 +249,16 @@ public function edit($id)
         return redirect()->route('index')->with('success', 'Data berhasil ditambahkan.');
     }
     public function ChartDashboard()
-    {
-        // Ambil data biaya dari database
-        // Ambil data untuk grafik
-        $income = biaya::where('type', 'income')->pluck('amount')->toArray();
-        $expense = biaya::where('type', 'expense')->pluck('amount')->toArray();
-        $labels = biaya::pluck('name_product')->toArray(); // Misalnya, gunakan 'name_product' sebagai label
+{
+    // Ambil data biaya dari database
+    $income = Biaya::where('type', 'income')->pluck('amount')->toArray();
+    $expense = Biaya::where('type', 'expense')->pluck('amount')->toArray();
+    $labels = Biaya::pluck('name_product')->toArray(); // Misalnya, gunakan 'name_product' sebagai label
 
     // Kirim data ke tampilan
     return view('dashboard', compact('income', 'expense', 'labels'));
-    }
+}
+
     public function downloadFilteredPDF(Request $request)
 {
     // Ambil tanggal mulai dan tanggal selesai dari permintaan
@@ -329,19 +329,20 @@ public function edit($id)
     // Keluarkan PDF ke browser dan download dengan nama file 'filtered_data.pdf'
     $pdf->Output('data terfilter.pdf', 'D');
 }
-public function showIncomeAndExpense()
-{
-    // Menghitung total pemasukan
-    $totalincome = Biaya::where('type', 'income')->sum('amount');
+    // public function showIncomeAndExpense()
+    // {
+    //     // Menghitung total pemasukan
+    //     $totalincome = Biaya::where('type', 'income')->sum('amount');
 
-    // Menghitung total pengeluaran
-    $totalexpense = Biaya::where('type', 'expense')->sum('amount');
+    //     // Menghitung total pengeluaran
+    //     $totalexpense = Biaya::where('type', 'expense')->sum('amount');
 
-    return view('dashboard', [
-        'totalIncome' => $totalincome,
-        'totalExpense' => $totalexpense,
-    ]);
-}
+    //     return view('dashboard', [
+    //         'totalIncome' => $totalincome,
+    //         'totalExpense' => $totalexpense,
+    //     ]);
+    // }
+
 }
 
 

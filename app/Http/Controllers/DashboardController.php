@@ -31,36 +31,35 @@ class DashboardController extends Controller
     // Kirim data produk ke view menu.blade.php
     return view('menu', ['products' => $products]);
     }
-public function loadDashboard(){
-    return view('dashboard');
-}
-public function loadCategories(){
-    $categories = category::all();
-    return view('category', ['categories' => $categories]);
+    public function loadDashboard(){
+        return view('dashboard');
+    }
+    public function loadCategories(){
+        $categories = category::all();
+        return view('category', ['categories' => $categories]);
 
-}
-public function loadProducts(){
-    $products = product::all();
-    return view('product', ['products' => $products]);
-}
+    }
+    public function loadProducts(){
+        $products = product::all();
+        return view('product', ['products' => $products]);
+    }
 
-public function loadBiaya(){
-    $biaya = Biaya::all();
-    return view('biaya', ['biaya' => $biaya]);
-}
+    public function loadBiaya(){
+        $biaya = Biaya::all();
+        return view('biaya', ['biaya' => $biaya]);
+    }
 
-public function loadAdmin(){
-    $admins = Admin::all();
-    return view('account', ['admins' => $admins]);
-}
+    public function loadAdmin(){
+        $admins = Admin::all();
+        return view('account', ['admins' => $admins]);
+    }
 
-public function loadCart(){
-    $carts = Cart::all();
-    return view('cart', ['carts' => $carts]);
-}
-public function keranjang(){
-    $carts = Cart::all();
-    return view('keranjang', ['carts' => $carts]);
-}
-
+    public function loadCart(){
+        $carts = Cart::all();
+        return view('cart', ['carts' => $carts]);
+    }
+    public function keranjang(){
+        $carts = Cart::all();
+        return view('keranjang', ['carts' => $carts]);
+    }
 }

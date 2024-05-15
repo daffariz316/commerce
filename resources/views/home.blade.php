@@ -18,7 +18,6 @@
 <body>
 
 <!-- header section starts      -->
-
 <header>
 
     <a href="#" class="logo">Bu'E Cookies and Bakery.</a>
@@ -35,9 +34,19 @@
         <i class="fas fa-bars" id="menu-bars"></i>
         <i class="fas fa-search" id="search-icon"></i>
         <a href="#" class="fab fa-whatsapp"></a>
-        <a href="#" class="fas fa-shopping-cart"></a>
+        {{-- <a href="#" class="fas fa-shopping-cart"></a> --}}
         <a href="{{ route('user.profile') }}" class="fas fa-user"></a>
     </div>
+    @if (auth()->check())
+        <!-- Jika pengguna sudah login, tampilkan tombol logout -->
+        <form action="{{ route('user.logout') }}" method="Get">
+            @csrf
+            <button type="submit" class="btn">Logout</button>
+        </form>
+    @else
+        <!-- Jika pengguna belum login, tampilkan tombol login -->
+        <a href="{{ route('user-login') }}" class="btn">Login</a>
+    @endif
 
 </header>
 
@@ -62,12 +71,12 @@
             <div class="swiper-slide slide">
                 <div class="content">
                     <span>Our Special cookies</span>
-                    <h3>Cookies</h3>
+                    <h3>Nastar</h3>
                     <p>Temukan beragam varian kue kering lezat dengan hanya beberapa kali klik, dan nikmati kemudahan belanja tanpa harus keluar rumah!</p>
                     <a href="https://wa.me/+62895372499072" class="btn">order now</a>
                 </div>
                 <div class="image">
-                    <img src="{{ asset('asset/images/Cookies2.png') }}" alt="">
+                    <img src="{{"/images" .asset('Nastar.jpg') }}" alt="">
                 </div>
             </div>
 
@@ -75,7 +84,7 @@
                 <div class="content">
                     <span>Our Special menu</span>
                     <h3>Bolen</h3>
-                    <p>Bolen di kami sangat lembut dan renyah ketika di makan </p>
+                    <p>Dengan keharuman lembut pisang segar yang melonjak dari setiap putaran pastri yang lembut dan renyah, Bolen Pisang Premium kami adalah simbol autentik dari kelezatan tropis. Dibuat dengan teliti menggunakan pisang pilihan dan bahan-bahan berkualitas tinggi, setiap gigitan membawa Anda ke surga rasa yang tak terlupakan.</p>
                     <a href="#" class="btn">order now</a>
                 </div>
                 <div class="image">
@@ -87,11 +96,11 @@
                 <div class="content">
                     <span>Our Special menu</span>
                     <h3>Bluder</h3>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit natus dolor cumque?</p>
+                    <p>Bawa pengalaman roti yang tak tertandingi ke dalam hidangan Anda dengan Roti Bluder kami. Dipanggang dengan hati-hati untuk mencapai keseimbangan sempurna antara kerenyahan luar dan kelembutan dalam, setiap gigitan Roti Bluder adalah perpaduan yang menggugah selera dan memuaskan hasrat akan rasa yang autentik</p>
                     <a href="#" class="btn">order now</a>
                 </div>
                 <div class="image">
-                    <img src="{{ asset('images/1714740492.jpg') }}" alt="Bluder">
+                    <img src="{{"/images" .asset('bluder.jpeg') }}" alt="">
                 </div>
             </div>
 
@@ -113,15 +122,23 @@
     <h1 class="heading">popular</h1>
 
     <div class="box-container">
-
         @foreach($products->take(5) as $product)
         <div class="box">
             <!-- <a href="#" class="fas fa-heart"></a>
             <a href="#" class="fas fa-eye"></a> -->
-            <img src="{{ '/images' . asset($product->image) }}" alt="{{ $product->name_product }}">
+            <a href="{{ route('product.detail', ['product' => $product->id]) }}" class="fas fa-eye" data-product-id="{{ $product->id }}"></a>
+            <img src="{{"/images". asset($product->image) }}" alt="{{ $product->name_product }}">
             <h3>{{ $product->name_product }}</h3>
             <span>IDR {{ number_format($product->price, 2) }}</span>
-            <a href="#" class="btn">order now</a>
+            <form action="{{ route('cart.add') }}" method="POST" class="add-to-cart-form">
+                @csrf
+                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                <div class="quantity">
+                    <label for="quantity{{ $product->id }}">Quantity:</label>
+                    <input type="number" id="quantity{{ $product->id }}" name="quantity" value="1" min="1">
+                </div>
+                <button type="button" class="btn add-to-cart-btn" data-product-id="{{ $product->id }}" data-product-name="{{ $product->name_product }}">Add to Cart</button>
+            </form>
         </div>
         @endforeach
     </div>
@@ -194,8 +211,7 @@
         </div>
         <div class="map">
           <!-- Embed your map code here -->
-          <iframe src="https://www.google.com/maps/embed?pb=!3m2!1sid!2sid!4v1714652057759!5m2!1sid!2sid!6m8!1m7!1sEHGkDWE6z8LnwQd4-t05oA!2m2!1d-6.220444113367562!2d107.0251774979522!3f232.85213526109195!4f-5.929668269401461!5f0.7820865974627469" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" title="Google Maps"></iframe>
-        </div>
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.3220223642156!2d107.02203597428263!3d-6.221199860929704!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e698eb9fed99b83%3A0x67f0a0cc8142441b!2sJl.%20Taman%20Wisma%20Asri%20Blok%20N.%2036%20No.2%2C%20RT.002%2FRW.032%2C%20Tlk.%20Pucung%2C%20Kec.%20Bekasi%20Utara%2C%20Kota%20Bks%2C%20Jawa%20Barat%2017121!5e0!3m2!1sid!2sid!4v1715508615067!5m2!1sid!2sid" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>        </div>
       </div>
     </div>
   </section>
@@ -216,80 +232,61 @@
 
             <div class="swiper-slide slide">
                 <i class="fas fa-quote-right"></i>
-                <div class="user">
-                    <img src="{{ asset('asset/images/Ellipse 1.png') }}" alt="">
-                    <div class="user-info">
-                        <h3>Daffarizqy</h3>
-                        <div class="stars">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                    </div>
-                </div>
-                <p>saya tidak menyesal beli kue disini dan sangatlah memuaskan. dengan harga yang segitu saya mendapatkan rasa yang sangatlah enak</p>
+                <br>
+                <br>
+                <br>
+                <br>
+                <p>
+                    Saya baru pertama kali mencoba kue kering dari Bu'E ,
+                    dan saya langsung jatuh cinta! Rasanya enak dan bahan-bahannya terasa berkualitas.
+                    Ini pasti akan menjadi langganan tetap untuk kue kering di rumah saya. Terima kasih, Bu'E!
+                </p>
             </div>
 
             <div class="swiper-slide slide">
                 <i class="fas fa-quote-right"></i>
-                <div class="user">
-                    <img src="{{ asset('asset/images/Ellipse 1.png') }}" alt="">
-                    <div class="user-info">
-                        <h3>Putri Ibu</h3>
-                        <div class="stars">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star-half-alt"></i>
-                        </div>
-                    </div>
-                </div>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit fugiat consequuntur repellendus aperiam deserunt nihil, corporis fugit voluptatibus voluptate totam neque illo placeat eius quis laborum aspernatur quibusdam. Ipsum, magni.</p>
+                <br>
+                <br>
+                <br>
+                <br>
+                <p>
+                    Saya sangat terkesan dengan kualitas kue kering dari Bu'E.
+                    Rasa dan teksturnya benar-benar sempurna, seperti buatan rumah.
+                    Ini adalah pengalaman belanja online terbaik saya untuk kue kering. Pasti akan membeli lagi!
+                </p>
             </div>
 
             <div class="swiper-slide slide">
                 <i class="fas fa-quote-right"></i>
-                <div class="user">
-                    <img src="{{ asset('asset/images/Ellipse 1.png') }}" alt="">
-                    <div class="user-info">
-                        <h3>Putri Ibu</h3>
-                        <div class="stars">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star-half-alt"></i>
-                        </div>
-                    </div>
-                </div>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit fugiat consequuntur repellendus aperiam deserunt nihil, corporis fugit voluptatibus voluptate totam neque illo placeat eius quis laborum aspernatur quibusdam. Ipsum, magni.</p>
+                <br>
+                <br>
+                <br>
+                <br>
+                <p>
+                    saya udah beberapa kali pesan kue dari Bu'E
+                    saya sangat kagum dengan rasa kue disini sangatlah menggugah selera.
+                    saya sangat merekomendasikan kue disini untuk kalian yang ingin mencoba kue yang enak dan lezat.
+                    keluarga saya sangat suka dengan kue Bu'E
+                </p>
             </div>
 
             <div class="swiper-slide slide">
                 <i class="fas fa-quote-right"></i>
-                <div class="user">
-                    <img src="{{ asset('asset/images/Ellipse 1.png') }}" alt="">
-                    <div class="user-info">
-                        <h3>Putri Ibu</h3>
-                        <div class="stars">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star-half-alt"></i>
-                        </div>
-                    </div>
-                </div>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit fugiat consequuntur repellendus aperiam deserunt nihil, corporis fugit voluptatibus voluptate totam neque illo placeat eius quis laborum aspernatur quibusdam. Ipsum, magni.</p>
+                <br>
+                <br>
+                <br>
+                <br>
+                <p>
+                    Saya sangat suka dengan kue kering dari Bu'E.
+                    Rasanya enak dan bahan-bahannya berkualitas.
+                    Saya pasti akan merekomendasikan kue kering dari Bu'E kepada teman-teman saya.
+                    Terima Kasih Bue Selalu Ada Buat Kamu
+                </p>
             </div>
 
         </div>
 
     </div>
-
 </section>
 
 <!-- review section ends -->
@@ -314,7 +311,7 @@
 
         <div class="box">
             <h3>contact info</h3>
-            <a href="https://wa.me/+62895372499072">Whatsapp</a>
+            <a href="https://wa.me/+6285891088920">Whatsapp</a>
             <a href="mailto: buepastry@gmail.com">Email</a>
             <a href="#">Bekasi, Indonesia - 17121</a>
         </div>
@@ -330,14 +327,78 @@
 
 </section>
 
+<!-- Sertakan JavaScript -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const contactForm = document.getElementById('contact-form');
+      contactForm.addEventListener('submit', function(event) {
+        event.preventDefault(); // Mencegah pengiriman formulir secara default
+
+        // Dapatkan nilai dari input formulir
+        const name = contactForm.querySelector('input[name="name"]').value;
+        const email = contactForm.querySelector('input[name="email"]').value;
+        const subject = contactForm.querySelector('input[name="subject"]').value;
+        const message = contactForm.querySelector('textarea[name="message"]').value;
+
+        // Buat pesan yang akan dikirim ke WhatsApp
+        const whatsappMessage = `Name: ${name}
+                                Email: ${email}
+                                Subject: ${subject}
+                                Message: ${message}`;
+
+        // Kirim pesan WhatsApp
+        const whatsappLink = `https://wa.me/+6285891088920?text=${encodeURIComponent(whatsappMessage)}`;
+        window.open(whatsappLink, '_blank');
+
+        // Atau, jika Anda ingin mengarahkan pengguna ke aplikasi WhatsApp di perangkat mobile, gunakan kode di bawah ini
+        // window.location.href = whatsappLink;
+      });
+    });
+  </script>
+
+
 <!-- footer section ends -->
+<script>
+    // JavaScript to handle the "Add to Cart" button click event
+ const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+ addToCartButtons.forEach(button => {
+     button.addEventListener('click', () => {
+         const productId = button.getAttribute('data-product-id');
+         const productName = button.getAttribute('data-product-name');
+         const productQuantity = document.getElementById(`quantity${productId}`).value;
+
+         // Kirim data produk ke endpoint Laravel
+         fetch('{{ route("cart.add") }}', {
+             method: 'POST',
+             headers: {
+                 'Content-Type': 'application/json',
+                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
+             },
+             body: JSON.stringify({
+                 product_id: productId,
+                 quantity: productQuantity
+             })
+         }).then(response => {
+             if (response.ok) {
+                 // Langsung arahkan pengguna ke percakapan WhatsApp
+                 const message = `Saya mau pesan ini ${productName} - Quantity: ${productQuantity}`;
+                 const whatsappLink = `whatsapp://send?phone=+6285891088920&text=${encodeURIComponent(message)}`;
+                 window.location.href = whatsappLink;
+             } else {
+                 console.error('Failed to add product to cart');
+             }
+         }).catch(error => {
+             console.error('Error:', error);
+         });
+     });
+ });
+ </script>
 
 <!-- loader part  -->
 <div class="loader-container">
     <img src="{{ asset('asset/images/loader.gif') }}" alt="">
 </div>
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-
 <!-- custom js file link  -->
 <script src="{{ asset('asset/js/home/script.js') }}"></script>
 <script src="{{ asset('asset/js/map.js') }}"></script>

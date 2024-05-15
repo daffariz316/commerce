@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responsive Admin Dashboard </title>
+    <title>Admin Bu'e </title>
     <!-- ======= Styles ====== -->
     <link rel="stylesheet"href="{{ asset('asset/css/dashboard/style.css') }}">
 </head>
@@ -65,7 +65,6 @@
                         <span class="title">Admin Account</span>
                     </a>
                 </li>
-
                 <li>
                     <a href="{{ url('/cart') }}">
                         <span class="icon">
@@ -74,6 +73,7 @@
                         <span class="title">Cart</span>
                     </a>
                 </li>
+
                 <li>
                     <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         <span class="icon">
@@ -85,7 +85,7 @@
                         @csrf
                     </form>
                 </li>
-                
+
             </ul>
         </div>
     </div>
@@ -103,8 +103,26 @@
                         <ion-icon name="search-outline"></ion-icon>
                     </label>
                 </div>
-                <div class="user">
-                    <img src="{{ asset('asset/image/defaultProfile.png') }}" alt="Customer Image">
+                <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" id="userDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                        onClick="toggleUserInfo()">
+                        <div class="user"> <!-- Menggunakan div sebagai gantinya -->
+                            <img src="{{ asset('asset/image/defaultProfile.png') }}" alt="Customer Image">
+                        </div>
+                    </a>
+                    <!-- Dropdown - User Information -->
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                        aria-labelledby="userDropdown">
+                        <a class="dropdown-item" href="#">
+                            <ion-icon name="person-circle-outline" class="align-middle"></ion-icon>
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ session('admin')->username }}</span>
+                        </a>
+                        <a class="dropdown-item" href="#">
+                            <ion-icon name="mail-outline"></ion-icon>
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ session('admin')->email }}</span>
+                        </a>
+                    </div>
                 </div>
             </div>
             {{--main containner --}}
@@ -112,13 +130,13 @@
                 <div class="row">
                     <div class="col-md-12">
                         <!-- Tombol Insert -->
-                        <button class="insert-button" onclick="window.location.href='{{ route('biaya.create') }}'">
+                        <button class="insert-button" onclick="window.location.href=''">
                             <ion-icon name="add-circle-outline"></ion-icon> Insert
                         </button>
                         <!-- Tombol Download All -->
-                        <button class="download-button" onclick="window.location.href='{{ route('download.all.pdf') }}'">
-                            Download All
-                        </button>
+                        <button class="button" onclick="window.location.href='{{ route('download.all.pdf') }}'">
+                            <span class="button-content">Download All</span>
+                          </button>
                         <!-- Filter Section -->
                         <div class="filter-section">
                             <input type="date" id="startDate" class="filter">
@@ -170,17 +188,20 @@
                                         </td>
                                         <td>
                                             <!-- Tombol Download untuk setiap entri biaya -->
-                                            <div class="button-group">
-                                                <button class="download-button" onclick="window.location.href='{{ route('download.pdf', ['id' => $item->id]) }}'">
-                                                    <ion-icon name="download-outline"></ion-icon>
-                                                </button>
-                                            </div>
+                                            <button class="button" onclick="window.location.href='{{ route('download.pdf', ['id' => $item->id]) }}'">
+                                                <span class="button-content">Download </span>
+                                              </button>
+                                              <br>
+                                              <br>
                                             {{-- tombol untuk edit datanya --}}
-                                            <div class="button-group">
-                                                <button class="edit-button" onclick="window.location.href='{{ route('biaya.edit', ['id' => $item->id]) }}'">
-                                                    <ion-icon name="create-outline"></ion-icon>
-                                                </button>
-                                            </div>
+                                            <button class="Btn" onclick="window.location.href='{{ route('biaya.edit', ['id' => $item->id]) }}'">
+                                                <svg viewBox="0 0 512 512" class="svg">
+                                                    <path
+                                                      d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7L348.3 33.2 325.7 55.8 314.3 67.1l33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z"
+                                                    ></path>
+                                                  </svg>
+                                                <span class="edit-text">Edit</span>
+                                              </button>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -198,6 +219,11 @@
                     </div>
                 </div>
             </div>
+            <footer class="custom-footer">
+                <div class="custom-container">
+                    <p>&copy; 2024 Bu'e Cookies and pastry. All rights reserved.</p>
+                </div>
+            </footer>
 
             <script>
                 function filterByDate() {
@@ -212,6 +238,26 @@
         // Redirect to the route for downloading filtered data
         window.location.href = "{{ route('download.filtered.pdf') }}?startDate=" + startDate + "&endDate=" + endDate;
     }
+    function toggleUserInfo() {
+    var userInfo = document.querySelector(".dropdown-menu");
+    userInfo.classList.toggle("show");
+}
+
+// Menambahkan event listener untuk menutup dropdown saat klik di luar dropdown
+window.addEventListener("click", function(event) {
+    var dropdownMenu = document.querySelector(".dropdown-menu");
+    var userDropdown = document.querySelector(".dropdown-toggle");
+    if (!userDropdown.contains(event.target) && !dropdownMenu.contains(event.target)) {
+        dropdownMenu.classList.remove("show");
+    }
+});
+
+// Fungsi untuk menutup dropdown saat modal signout ditutup
+$('#logoutModal').on('hidden.bs.modal', function (e) {
+    var dropdownMenu = document.querySelector(".dropdown-menu");
+    dropdownMenu.classList.remove("show");
+});
+
             </script>
 
 

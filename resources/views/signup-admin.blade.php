@@ -9,7 +9,7 @@
 <body>
     <div class="container" id="container">
         <div class="form-container sign-up">
-            <form action="{{ route('admin-signup') }}" method="POST">
+            <form id="signupForm" action="{{ route('admin-signup') }}" method="POST">
                 @csrf
                 <h1>Create Account</h1>
                 <div>
@@ -25,6 +25,7 @@
                     <input type="password" name="password" id="password" required>
                 </div>
                 <button type="submit">Sign Up</button>
+                <div id="error-message" style="color: red; margin-top: 10px; display: none;"></div>
             </form>
         </div>
         <div class="toggle-container">
@@ -43,5 +44,26 @@
         </div>
     </div>
     <script src="{{ asset('asset/js/login/script.js') }}"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Tangkap elemen formulir sign-up
+            var signupForm = document.getElementById("signupForm");
+            // Tangkap elemen pesan kesalahan
+            var errorMessage = document.getElementById("error-message");
+
+            // Tambahkan event listener untuk menangani submit form
+            signupForm.addEventListener("submit", function(event) {
+                // Hilangkan pesan kesalahan jika ada
+                errorMessage.style.display = "none";
+                // Validasi di sisi client juga bisa ditambahkan jika diperlukan
+            });
+
+            // Tampilkan pesan kesalahan jika akun sudah terdaftar
+            @if($errors->has('email'))
+                errorMessage.innerHTML = "{{ $errors->first('email') }}";
+                errorMessage.style.display = "block";
+            @endif
+        });
+    </script>
 </body>
 </html>

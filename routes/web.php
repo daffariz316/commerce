@@ -7,6 +7,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
+use App\Models\biaya;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
@@ -23,16 +24,16 @@ use App\Http\Controllers\CartController;
 */
 
 // Rute untuk admin
-Route::get('/login', [AuthController::class, 'showAdminLoginForm'])->name('admin-login');
-Route::post('/login', [AuthController::class, 'adminLogin']);
-Route::get('/signup', [AuthController::class, 'showAdminSignupForm'])->name('admin-signup');
-Route::post('/signup', [AuthController::class, 'adminSignup']);
+Route::get('/admin-login', [AuthController::class, 'showAdminLoginForm'])->name('admin-login');
+Route::post('/admin-login', [AuthController::class, 'adminLogin']);
+Route::get('/admin-signup', [AuthController::class, 'showAdminSignupForm'])->name('admin-signup');
+Route::post('/admin-signup', [AuthController::class, 'adminSignup']);
 
 // Rute untuk user
-Route::get('/user-login', [AuthController::class, 'showUserLoginForm'])->name('user-login');
-Route::post('/user-login', [AuthController::class, 'userLogin']);
-Route::get('/user-signup', [AuthController::class, 'showUserSignupForm'])->name('user-signup');
-Route::post('/user-signup', [AuthController::class, 'userSignup']);
+Route::get('/login', [AuthController::class, 'showUserLoginForm'])->name('user-login');
+Route::post('/login', [AuthController::class, 'userLogin']);
+Route::get('/signup', [AuthController::class, 'showUserSignupForm'])->name('user-signup');
+Route::post('/signup', [AuthController::class, 'userSignup']);
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
@@ -50,13 +51,14 @@ Route::get('/product',[DashboardController::class,'loadProducts']);
 Route::get('/category',[DashboardController::class,'loadCategories']);
 Route::get('/admin',[DashboardController::class,'loadAdmin']);
 Route::get('/cart',[DashboardController::class,'loadCart']);
+Route::get('/total-products', [ProductController::class, 'getTotalProducts'])->name('total-products');
 
 //dashboard user
 Route::get('/home', [DashboardController::class, 'loadUserDashboard']);
 Route::get('/menu',[DashboardController::class,'loadMenu']);
 
 Route::get('/user/profile', [AuthController::class, 'profile'])->name('user.profile')->middleware('auth');
-Route::get('/user/logout', [AuthController::class, 'userlogout'])->name('user.logout');
+Route::get('/user-logout', [AuthController::class, 'userlogout'])->name('user.logout');
 // Rute untuk menampilkan form edit profil
 Route::get('/user/profile/edit', [AuthController::class, 'editProfileForm'])->name('user.edit-profile-form');
 
@@ -88,6 +90,7 @@ Route::get('/show-expense', [BiayaController::class, 'showExpense'])->name('show
 // Rute untuk menangani permintaan POST dari formulir penambahan data
 Route::post('/biaya', [BiayaController::class, 'store'])->name('biaya.store');
 Route::get('/dashboard', [BiayaController::class, 'ChartDashboard'])->name('dashboard');
+// Route::get('/admin/chart', [adminController::class, 'adminChart'])->name('admin.chart');
 Route::get('/download/filtered/pdf', [BiayaController::class, 'downloadFilteredPDF'])->name('download.filtered.pdf');
 Route::get('/home/menu', [ProductController::class, 'loadProduct'])->name('user.dashboard');
 Route::get('/home', [ProductController::class, 'takeProduct'])->name('home.dashboard');
@@ -100,6 +103,7 @@ Route::post('/products', [ProductController::class, 'store'])->name('products.st
 Route::get('/products/{id}/edit',[ProductController::class, 'edit'])->name('product.edit');
 Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update');
 Route::delete('/products/{id}', [ProductController::class, 'delete'])->name('products.delete');
+Route::get('/product/{product}', [ProductController::class, 'show'])->name('product.detail');
 
 
 
@@ -126,3 +130,10 @@ Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add')
 // Rute untuk menampilkan halaman keranjang belanja
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::get('/cart', [CartController::class, 'showCart'])->name('cart.show');
+Route::get('/carts/downloadPDF/{id}', [CartController::class, 'downloadPDF'])->name('carts.downloadPDF');
+// Definisi rute untuk menandai pesanan sebagai selesai dan menghapusnya dari keranjang
+Route::post('/cart/{id}/finish', [CartController::class, 'markAsFinished'])->name('cart.markAsFinished');
+
+
+Route::get('/total-sales', [CartController::class, 'getTotalSales']);
+

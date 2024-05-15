@@ -2,6 +2,7 @@
 
 :root{
   --orange:#DC6B19;
+  --orange--color: #DD761C;
   --black:#0C0C0C;
   --light-color:#666;
   --box-shadow:0 .5rem 1.5rem rgb(0,0,0,.1);
@@ -39,6 +40,18 @@ section:nth-child(even){
   background: #eee;
 }
 
+section:not(.footer) {
+  padding: 2rem 9%;
+}
+
+section:not(.footer):nth-child(even) {
+  background: #eee;
+}
+
+section.footer {
+  background: var(--orange--color);
+  padding: 2rem 9%; /* Atur sesuai kebutuhan Anda */
+}
 /* Judul Section Start */
 
 .sub-heading{
@@ -545,7 +558,7 @@ input[type="submit"]:hover {
   display: block;
   padding: .5rem 0;
   font-size: 1.5rem;
-  color: var(--light-color);
+  color: white;
 }
 
 .footer .box-container .box a:hover{
@@ -564,9 +577,8 @@ input[type="submit"]:hover {
 }
 
 .footer .credit span{
-  color: var(--orange);
+  color: white;
 }
-
 /* Footer  End */
 
 /* Loader  Start */
@@ -595,31 +607,6 @@ input[type="submit"]:hover {
 } */
 
 /* Loader  End */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /* Media Requirement */
 

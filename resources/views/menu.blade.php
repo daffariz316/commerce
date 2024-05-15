@@ -19,7 +19,7 @@
 
   <!-- Header Section Start -->
   <header>
-    <a href="#" class="logo"><i class="fas-fa-untensils"></i>Bu'e Cookies and Pastry</a>
+    <a href="#" class="logo"><i class="fas-fa-untensils"></i>Bu'E Cookies and Pastry</a>
     <nav class="navbar">
         <a class="" href="{{url('/home')}}">home</a>
         <a class="active"  href="{{url('/menu')}}">Product</a>
@@ -32,11 +32,20 @@
       <i class="fas fa-bars" id="menu-bars"></i>
       <i class="fas fa-search" id="search-icon"></i>
       <a href="#" class="fab fa-whatsapp"></a>
-      <!-- Tampilkan jumlah total item di keranjang -->
-        <a href="#" class="fas fa-shopping-cart"></a>
+      {{-- <!-- Tampilkan jumlah total item di keranjang -->
+        <a href="#" class="fas fa-shopping-cart"></a> --}}
       <a href="{{ route('user.profile') }}" class="fas fa-user"></a>
     </div>
-
+    @if (auth()->check())
+    <!-- Jika pengguna sudah login, tampilkan tombol logout -->
+    <form action="{{ route('user.logout') }}" method="Get">
+        @csrf
+        <button type="submit" class="btn">Logout</button>
+    </form>
+@else
+    <!-- Jika pengguna belum login, tampilkan tombol login -->
+    <a href="{{ route('user-login') }}" class="btn">Login</a>
+@endif
   </header>
 <!-- Header Section End -->
 
@@ -58,10 +67,9 @@
     </p>
 
     <div class="box-container">
-
         @foreach($products as $product)
         <div class="box">
-            <a href="" class="fas fa-eye" data-product-id="{{ $product->id }}"></a>
+            <a href="{{ route('product.detail', ['product' => $product->id]) }}" class="fas fa-eye" data-product-id="{{ $product->id }}"></a>
             <img src="{{"/images". asset($product->image) }}" alt="{{ $product->name_product }}">
             <h3>{{ $product->name_product }}</h3>
             <span>IDR {{ number_format($product->price, 2) }}</span>
@@ -72,10 +80,11 @@
                     <label for="quantity{{ $product->id }}">Quantity:</label>
                     <input type="number" id="quantity{{ $product->id }}" name="quantity" value="1" min="1">
                 </div>
-                <button type="submit" class="btn">Add to Cart</button>
+                <button type="button" class="btn add-to-cart-btn" data-product-id="{{ $product->id }}" data-product-name="{{ $product->name_product }}">Add to Cart</button>
             </form>
         </div>
     @endforeach
+
     </div>
 </div>
 
@@ -103,7 +112,7 @@
 
         <div class="box">
             <h3>contact info</h3>
-            <a href="https://wa.me/+62895372499072">Whatsapp</a>
+            <a href="https://wa.me/+6285891088920">Whatsapp</a>
             <a href="mailto: buepastry@gmail.com">Email</a>
             <a href="#">Bekasi, Indonesia - 17121</a>
         </div>
@@ -120,6 +129,40 @@
 </section>
   <!-- Custom JS File Link -->
   <script src="{{ asset('asset/js/home/script.js') }}"></script>
+  <script>
+   // JavaScript to handle the "Add to Cart" button click event
+const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+addToCartButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const productId = button.getAttribute('data-product-id');
+        const productName = button.getAttribute('data-product-name');
+        const productQuantity = document.getElementById(`quantity${productId}`).value;
 
+        // Kirim data produk ke endpoint Laravel
+        fetch('{{ route("cart.add") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({
+                product_id: productId,
+                quantity: productQuantity
+            })
+        }).then(response => {
+            if (response.ok) {
+                // Langsung arahkan pengguna ke percakapan WhatsApp
+                const message = `Saya mau pesan ini ${productName} - Quantity: ${productQuantity}`;
+                const whatsappLink = `whatsapp://send?phone=+6285891088920&text=${encodeURIComponent(message)}`;
+                window.location.href = whatsappLink;
+            } else {
+                console.error('Failed to add product to cart');
+            }
+        }).catch(error => {
+            console.error('Error:', error);
+        });
+    });
+});
+</script>
 </body>
 </html>

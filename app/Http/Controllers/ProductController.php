@@ -104,6 +104,9 @@ class ProductController extends Controller
         // Redirect ke halaman index produk dengan pesan sukses
         return redirect()->route('products.index')->with('success', 'Product deleted successfully.');
     }
-
+    public function show(Product $product)
+    {
+        return view('detail-product', compact('product'));
+    }
 
 }

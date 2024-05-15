@@ -1,32 +1,77 @@
-<!-- resources/views/auth/profile.blade.php -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
-    <!-- Link untuk CSS styling, misalnya bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <style>
+        /* Add your CSS styling here */
+        :root{
+        --orange:#DC6B19;
+        --orange--color: #DD761C;
+        --black:#0C0C0C;
+        --light-color:#666;
+        --box-shadow:0 .5rem 1.5rem rgb(0,0,0,.1);
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #DD761C;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        .card {
+            background: #f0f0f0;
+            border-radius: 20px;
+            overflow: hidden;
+            max-width: 300px;
+            margin: auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .name {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .about {
+            font-size: 16px;
+            color: #777;
+            margin-top: 5px;
+        }
+
+        .buttons {
+            margin-top: 20px;
+        }
+
+        .buttons button {
+            background: var(--black);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            outline: none;
+        }
+
+    </style>
 </head>
 <body>
-    <div class="container mt-5">
-        <div class="card mx-auto" style="max-width: 400px;">
-            <div class="card-header text-center">
-                <h2>User Profile</h2>
-            </div>
-            <div class="card-body">
-                <p class="text-center"><strong>Name:</strong> {{ $user->username }}</p>
-                <p class="text-center"><strong>Email:</strong> {{ $user->email }}</p>
-                <p class="text-center"><strong>Phone:</strong> {{ $user->phone }}</p>
-                <!-- Add other profile details as needed -->
-                <div class="text-center">
-                    <a href="{{ route('user.edit-profile-form') }}" class="btn btn-primary">Edit Profile</a>
-                    <a href="{{ route('user.logout') }}" class="btn btn-danger">Sign Out</a>
-                    <a href="{{ route('user.dashboard') }}" class="btn btn-secondary">Back to Home</a> <!-- Tambahkan tombol balik ke home -->
-                </div>
-            </div>
-        </div>
+  <div class="card">
+    <div class="name">{{ $user->username }}</div>
+    <div class="about">{{ $user->email }}</div>
+    <div class="about">{{ $user->phone }}</div>
+    <div class="buttons">
+      <a href="{{ route('user.edit-profile-form') }}"><button>Edit Profile</button></a>
+      <a href="{{ route('user.dashboard') }}"><button>Back to Home</button></a>
     </div>
+  </div>
 </body>
 </html>

@@ -1,17 +1,14 @@
-<!-- resources/views/auth/edit-profile.blade.php -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile</title>
-    <!-- Link untuk CSS styling, misalnya bootstrap -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ asset('asset/css/edit-p/style.css') }}"> <!-- Panggil file CSS eksternal -->
 </head>
 <body>
     <div class="container mt-5">
-        <div class="card mx-auto" style="max-width: 400px;">
+        <div class="card mx-auto">
             <div class="card-header text-center">
                 <h2>Edit Profile</h2>
             </div>
@@ -23,11 +20,17 @@
                         <input type="text" class="form-control" id="username" name="username" value="{{ $user->username }}" required>
                     </div>
                     <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" value="{{ $user->email }}" required>
+                    </div>
+                    <div class="form-group">
                         <label for="phone">Phone</label>
                         <input type="text" class="form-control" id="phone" name="phone" value="{{ $user->phone }}" required>
                     </div>
                     <!-- Tambahkan form field lain jika diperlukan -->
                     <button type="submit" class="btn btn-primary">Update Profile</button>
+                    <br>
+                    <button type="submit" class="btn btn-warning">Cancel</button>
                 </form>
             </div>
         </div>
