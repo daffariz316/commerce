@@ -32,8 +32,7 @@ class ProductController extends Controller
     {
         return view('create-product');
     }
-
-    public function store(Request $request)
+public function store(Request $request)
     {
         $request->validate([
             'name_product' => 'required|string|max:255',
@@ -58,7 +57,6 @@ class ProductController extends Controller
 
         return redirect(route('products.index'))->with('success', 'Product created successfully.');
     }
-
 
     public function edit($id)
     {
