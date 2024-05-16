@@ -155,7 +155,7 @@
                                     <td>{{ $product->name_product }}</td>
                                     <td>
                                         @if($product->image)
-                                        <img src="{{ '/images' . asset( $product->image) }}" alt="Product Image" width="100">
+                                       <img src="{{ asset('storage/images/' . $product->image) }}" alt="Product Image" width="100">
                                         @else
                                         No Image Available
                                         @endif
