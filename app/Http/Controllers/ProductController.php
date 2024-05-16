@@ -33,36 +33,30 @@ class ProductController extends Controller
         return view('create-product');
     }
 public function store(Request $request)
-{
-    $request->validate([
-        'name_product' => 'required|string|max:255',
-        'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-        'price' => 'required|numeric',
-        'description' => 'nullable|string',
-        'stock' => 'required|integer',
-        'date' => 'required|date',
-    ]);
+    {
+        $request->validate([
+            'name_product' => 'required|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'price' => 'required|numeric',
+            'description' => 'nullable|string',
+            'stock' => 'required|integer',
+            'date' => 'required|date',
+        ]);
 
-    if ($request->hasFile('image')) {
         $imageName = time().'.'.$request->image->extension();
-        $request->image->move(storage_path('app/public/images'), $imageName);
-    } else {
-        $imageName = null;
+        $request->image->move(public_path('images'), $imageName);
+
+        $product = new Product();
+        $product->name_product = $request->name_product;
+        $product->image = $imageName;
+        $product->price = $request->price;
+        $product->description = $request->description;
+        $product->stock = $request->stock;
+        $product->date = $request->date;
+        $product->save();
+
+        return redirect(route('products.index'))->with('success', 'Product created successfully.');
     }
-
-    $product = new Product();
-    $product->name_product = $request->name_product;
-    $product->image = $imageName;
-    $product->price = $request->price;
-    $product->description = $request->description;
-    $product->stock = $request->stock;
-    $product->date = $request->date;
-    $product->save();
-
-    return redirect(route('products.index'))->with('success', 'Product created successfully.');
-}
-
-
 
     public function edit($id)
     {
